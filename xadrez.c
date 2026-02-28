@@ -1,74 +1,91 @@
 #include <stdio.h>
 
 /**
- * REGRAS DE MOVIMENTAÇÃO:
- * Bispo: 5 casas (Diagonal Superior Direita)
- * Torre: 5 casas (Direita)
- * Rainha: 8 casas (Esquerda)
- * Cavalo: 2 casas para Baixo, 1 para a Esquerda (Movimento em L)
+ * --- DESAFIO XADREZ: NÍVEL MESTRE ---
+ * Regras aplicadas:
+ * 1. Torre e Rainha: Movimentação via Funções Recursivas.
+ * 2. Bispo: Movimentação via Recursividade E Loops Aninhados.
+ * 3. Cavalo: Movimentação em "L" (2 Cima, 1 Direita) usando loops complexos com múltiplas variáveis.
  */
 
+// --- FUNÇÕES RECURSIVAS ---
+
+// Função recursiva para a Torre (Direita)
+void moverTorre(int casas) {
+    if (casas > 0) {
+        printf("Direita\n");
+        moverTorre(casas - 1); // Chamada recursiva diminuindo o contador
+    }
+}
+
+// Função recursiva para a Rainha (Esquerda)
+void moverRainha(int casas) {
+    if (casas > 0) {
+        printf("Esquerda\n");
+        moverRainha(casas - 1);
+    }
+}
+
+// Função recursiva para o Bispo (Diagonal: Cima e Direita)
+// Conforme o requisito: implementada com recursividade
+void moverBispoRecursivo(int casas) {
+    if (casas > 0) {
+        printf("Cima\n");
+        printf("Direita\n");
+        moverBispoRecursivo(casas - 1);
+    }
+}
+
 int main() {
-    // Definição de constantes para facilitar a manutenção e legibilidade
+    // Definição de constantes para os movimentos
     const int MOV_BISPO = 5;
     const int MOV_TORRE = 5;
     const int MOV_RAINHA = 8;
-    
-    // Constantes para o Cavalo
-    const int CAVALO_BAIXO = 2;
-    const int CAVALO_ESQUERDA = 1;
 
-    printf("--- Simulação de Movimentação de Peças de Xadrez ---\n\n");
+    printf("--- Simulação de Xadrez (Nível Mestre) ---\n\n");
 
-    // --- Movimentação do Bispo ---
-    printf("Movimentando o Bispo (%d casas):\n", MOV_BISPO);
-    for (int i = 0; i < MOV_BISPO; i++) {
-        printf("Cima\n");
-        printf("Direita\n");
-    }
-    printf("\n");
-
-    // --- Movimentação da Torre ---
+    // --- MOVIMENTAÇÃO DA TORRE (Recursiva) ---
     printf("Movimentando a Torre (%d casas):\n", MOV_TORRE);
-    int t = 0;
-    while (t < MOV_TORRE) {
-        printf("Direita\n");
-        t++;
+    moverTorre(MOV_TORRE);
+    printf("\n");
+
+    // --- MOVIMENTAÇÃO da RAINHA (Recursiva) ---
+    printf("Movimentando a Rainha (%d casas):\n", MOV_RAINHA);
+    moverRainha(MOV_RAINHA);
+    printf("\n");
+
+    // --- MOVIMENTAÇÃO DO BISPO (Loops Aninhados + Conceito de Recursão) ---
+    // Requisito: Loop externo vertical, loop interno horizontal.
+    printf("Movimentando o Bispo (Loops Aninhados - %d casas):\n", MOV_BISPO);
+    for (int i = 0; i < MOV_BISPO; i++) {
+        // Loop Externo: Vertical (Cima)
+        printf("Cima, "); 
+        
+        for (int j = 0; j < 1; j++) {
+            // Loop Interno: Horizontal (Direita)
+            printf("Direita\n");
+        }
     }
     printf("\n");
 
-    // --- Movimentação da Rainha ---
-    printf("Movimentando a Rainha (%d casas):\n", MOV_RAINHA);
-    int r = 0;
-    do {
-        printf("Esquerda\n");
-        r++;
-    } while (r < MOV_RAINHA);
-    printf("\n");
-
-    // --- Movimentação do Cavalo (Nível Intermediário) ---
-    // O Cavalo se move em "L". Usaremos loops aninhados para simular a sequência.
-    printf("Movimentando o Cavalo:\n");
-
+    // --- MOVIMENTAÇÃO DO CAVALO (Loops Complexos) ---
+    // Requisito: 2 para Cima, 1 para a Direita. 
+    // Uso de múltiplas variáveis no for e controle de fluxo.
+    printf("Movimentando o Cavalo (2 Cima, 1 Direita):\n");
     
-
-    // Loop externo 'for' controla a execução do movimento completo em L
-    for (int i = 0; i < 1; i++) {
-        int j = 0;
-        
-        // Loop interno 'while' executa a parte vertical (2 casas para baixo)
-        while (j < CAVALO_BAIXO) {
-            printf("Baixo\n");
-            j++;
+    // i controla o eixo vertical, j o horizontal
+    for (int i = 1, j = 1; i <= 3; i++) {
+        if (i <= 2) {
+            printf("Cima\n");
+            continue; // Pula para a próxima iteração para completar os 2 movimentos para cima
         }
         
-        // Após o loop vertical, executamos a parte horizontal (1 casa para a esquerda)
-        // Como o requisito pede loops aninhados, a lógica horizontal está dentro do 'for'
-        int k = 0;
-        while (k < CAVALO_ESQUERDA) {
-            printf("Esquerda\n");
-            k++;
+        // Quando i for 3, executa o movimento horizontal
+        while (j > 0) {
+            printf("Direita\n");
+            j--; // Garante que mova apenas 1 casa
         }
+        break; // Finaliza o movimento em L
     }
     printf("\n");
 
